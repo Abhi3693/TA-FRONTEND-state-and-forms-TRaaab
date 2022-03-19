@@ -1,0 +1,44 @@
+.container{
+  width: 50%;
+  margin: 3rem auto;
+  text-align: center;
+}
+body{
+  background-color: rgb(91, 91, 91);
+}
+button{
+  padding: 1rem;
+  font-size: 1.5rem;
+  background-color: rgb(23, 77, 38);
+  border: 1px solid lightgray;
+  color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+button:hover{
+  background-color: rgb(255, 255, 255) ;
+  color: rgb(69, 69, 69);
+}
+.btn-holder{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+.img-holder{
+  border: 1ps solid gray;
+  margin-top: 4rem;
+
+}
+img{
+  width: 100%;
+  border-radius: 10px;
+}
+h1 {
+  font-size: 3rem;
+  color: rgb(252, 252, 252);
+}
+.active {
+  background-color: rgb(255, 255, 255) ;
+  color: rgb(69, 69, 69);
+}

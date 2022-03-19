@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./index.css">
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    
+    class AddImage extends React.Component {
+
+      constructor() {
+        super();
+        this.state = {
+          tag : "basketball",
+        }
+      }
+
+      handleChange = (game) => {
+        this.setState({
+          tag : game,
+        })
+      }
+
+      render() {
+        return(
+        <div className="container">
+          <h1>Handling State</h1>
+          <div className="btn-holder">
+            <button 
+              className={this.state.tag === "basketball" ? "active" : ""} 
+              onClick={() => this.handleChange("basketball")}
+            >
+              Basketball
+            </button>
+
+            <button
+              className={this.state.tag === "pubg"  ? "active" : ""} 
+              onClick={() => this.handleChange("pubg")}
+            >
+              PubG
+            </button>
+            <button
+              className={this.state.tag === "tiger"  ? "active" : ""} 
+              onClick={() => this.handleChange("tiger")}
+            >
+              Tiger
+            </button>
+            <button
+              className={this.state.tag === "phone"  ? "active" : ""} 
+              onClick={() => this.handleChange("phone")}
+            >
+              Phone
+            </button>
+            <button
+              className={this.state.tag === "laptop"  ? "active" : ""} 
+              onClick={() => this.handleChange("laptop")}
+            >
+              Laptop
+            </button>
+            <button
+              className={this.state.tag === "cricket"  ? "active" : ""} 
+              onClick={() => this.handleChange("cricket")}
+            >
+              Cricket
+            </button>
+          </div>
+          <div className="img-holder">
+            <img src={"../assets/" + this.state.tag + ".jpg" } alt={this.state.tag + "-img"}/>
+          </div>
+        </div>)
+      }
+    }
+
+
+    ReactDOM.render(<AddImage/>, document.getElementById("root"));
+  </script>
+</body>
+</html>

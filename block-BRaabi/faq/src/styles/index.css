@@ -1,0 +1,40 @@
+.qus-holder {
+  padding: 2rem;
+  background-color: bisque;
+  width: 60%;
+  margin: 1rem auto;
+  border: 2px solid lightgray;
+}
+.qus {
+  font-size: 2rem;
+}
+i {
+  font-size: 2rem;
+}
+.flex {
+  display: flex;
+}
+.space-btw {
+  justify-content: space-between;
+}
+.container {
+  padding: 5rem;
+  border: 2px solid gray;
+}
+.ans-holder {
+  background-color: cadetblue;
+  padding: 1rem;
+  width: 60%;
+  margin: 1rem auto;
+  border: 2px solid lightgray;
+}
+.ans {
+  font-size: 1.5rem;
+}
+.qus-holder-with-ans {
+  background-color: darkgoldenrod;
+  padding: 2rem;
+  width: 60%;
+  margin: 1rem auto;
+  border: 2px solid lightgray;
+}

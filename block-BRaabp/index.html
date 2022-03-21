@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>checking font family</title>
+  <link rel="stylesheet" href="./assets/index.css">
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hurricane&family=Inconsolata&family=Inspiration&family=Montserrat&family=Noto+Sans&family=Open+Sans&family=Palette+Mosaic&family=Poppins&family=Ramaraja&family=Red+Hat+Mono&family=Roboto&family=Roboto+Slab&family=Titillium+Web&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="root"></div>
+    <!-- Your custom script here -->
+  <script type="text/babel">
+
+
+
+    let allFontFamily =  ['Hurricane', 'Inconsolata', 'Inspiration', 'Montserrat', 'Noto Sans', 'Open Sans', 'Palette Mosaic', 'Poppins', 'Ramaraja', 'Red Hat Mono', 'Roboto', 'Roboto Slab', 'Titillium Web']
+    
+    class App extends React.Component {
+      constructor() {
+        super();
+        this.state = {
+          inputText : "",
+          fontSize : 30
+        }
+      }
+
+      handleText = (event) => {
+        this.setState({
+          inputText: event.target.value
+        })
+      }
+
+      handleRange = (event) => {
+        this.setState({
+          fontSize: event.target.value
+        })
+      }
+      render() {
+        return (
+          <div className="container">
+            <div className="inpit-holder flex space-btw">
+              <input value={this.state.inputText} onChange={this.handleText} className="text" type="text" placeholder="Add text here"/>
+              <div className="range-holder">
+                <input value={this.state.fontSize} onChange={this.handleRange} className="range" type="range" min={0} max={100} />
+                <span>{this.state.fontSize}px</span>
+              </div>
+            </div>
+            <ul className="flex space-btw wrap">
+              {allFontFamily.map((font)=> {
+                return <li className="card" style={{fontFamily: font, fontSize: `${this.state.fontSize}px`}}  className="card">
+                  <h2>{font.charAt(0).toUpperCase() + font.slice(1, font.length)}</h2>
+                  {this.state.inputText}</li>
+              })}
+            </ul>
+          </div>
+        )
+      }
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>

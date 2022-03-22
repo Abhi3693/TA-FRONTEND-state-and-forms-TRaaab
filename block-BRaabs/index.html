@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form-Validation</title>
+  <link rel="stylesheet" href="./index.css">
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+
+    class ControlledForm extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          billingAddress: {
+            address:"",
+            zip:"",
+            city:"",
+            country:"",
+          },
+          shippingAddress: {
+            address:"",
+            zip:"",
+            city:"",
+            country:"",
+          },
+          errors: {
+            address:"",
+          },
+          sameAddressForShipping: false,
+        }
+      }
+
+      handleChange = (event) => {
+        let {name, value} = event.target;
+        let billingAddress = this.state.billingAddress;
+        billingAddress[name] = value;
+        this.setState({billingAddress});
+      }
+
+      handleToggle = (event) => {
+        let sameAddressForShipping = !this.state.sameAddressForShipping;
+        let shippingAddress;
+
+        if (sameAddressForShipping) {
+          shippingAddress = { ...this.state.billingAddress };
+        } else {
+          shippingAddress = {  address:"", zip:"", city:"", country:"" }
+        }
+        
+        this.setState({sameAddressForShipping, shippingAddress});
+      }
+
+      handleChangeShipping = () => {
+        let {name, value} = event.target;
+        let shippingAddress = this.state.shippingAddress;
+        shippingAddress[name] = value;
+        this.setState({shippingAddress});
+      }
+
+      handleSubmit = () => {
+        let{address, zip, city, country}= this.state.billingAddress;
+        alert(this.state.billingAddress.address +  " " + this.state.shippingAddress.address);
+      }
+
+      render() {
+        // console.log( this.state, "=========")
+
+        let { address } = this.state.errors
+        return (
+          <div className="container">
+            <div className="billingForm">
+              <form className="validation" onSubmit={this.handleSubmit}>
+              <h1>Billing Address</h1>
+              <label htmlFor="text">Address</label>
+              <input 
+                value={this.state.billingAddress.address} 
+                onChange={this.handleChange} 
+                type="text" 
+                name="address" 
+                id="text" 
+              />
+              <label htmlFor="date">Zip</label>
+              <input value={this.state.billingAddress.zip} 
+                onChange={this.handleChange} 
+                type="text" 
+                name="zip" 
+                id="date" 
+              />
+              <label htmlFor="fileInput">City</label>
+              <input 
+                value={this.state.billingAddress.city} 
+                onChange={this.handleChange} 
+                type="text" 
+                name="city" 
+                id="fileInput" 
+              />
+              <label htmlFor="readOnly">Country</label>
+              <input 
+                onChange={this.handleChange} 
+                type="text" 
+                name="country"  
+                id="readOnly"  
+                value={this.state.billingAddress.country} 
+              />
+              <input 
+                className="submit" 
+                type="submit" 
+                value="Submit"/>
+            </form>
+          </div>
+          <div className="shippingAddress">
+            <form className="validation" onSubmit={this.handleSubmit}>
+              <h1>Shipping Address</h1>
+              <div className="flex gap">
+                <input id="checkbox" type="checkbox" onChange={this.handleToggle} checked={this.state.sameAddressForShipping}/>
+                <label className="checkbox" htmlFor="checkbox">Same as the Billing Address</label>  
+              </div>
+              <label htmlFor="text">Address</label>
+              <input 
+                value={this.state.shippingAddress.address} 
+                onChange={this.handleChangeShipping} 
+                type="text" 
+                name="address" 
+                id="text" 
+              />
+              <label htmlFor="date">Zip</label>
+              <input 
+                value={this.state.shippingAddress.zip} 
+                onChange={this.handleChangeShipping} 
+                type="text" 
+                name="zip" 
+                id="date" 
+              />
+              <label htmlFor="fileInput">City</label>
+              <input 
+                value={this.state.shippingAddress.city} 
+                onChange={this.handleChangeShipping} 
+                type="text" 
+                name="city" 
+                id="fileInput" 
+              />
+              <label htmlFor="readOnly">Country</label>
+              <input 
+                onChange={this.handleChangeShipping} 
+                type="text" 
+                name="country"  
+                id="readOnly"  
+                value={this.state.shippingAddress.country } 
+              />
+              <input 
+                className="submit" 
+                type="submit" 
+                value="Submit"/>
+            </form>
+          </div>
+        </div>
+        )
+      }
+    }
+
+
+    // class shippingAddress extends React.Component {
+    //   constructor(props) {
+    //     super(props)
+    //     this.state = {
+    //       address:"",
+    //       zip:"",
+    //       city:"",
+    //       country:"",
+    //       errors: {
+    //         address:"",
+    //       }
+    //     }
+    //   }
+
+    //   handleChange = (event) => {
+    //     let {name, value} = event.target;
+    //     let errors = this.state.errors;
+    //     switch (name) {
+    //       case "address": value.length < 6 ? "" : "You need to enter at-least 8";
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //     this.setState({errors, [name]: value,});
+    //   }
+
+    //   handleSubmit = () => {
+    //     let{address, zip, city, country}= this.state;
+    //     alert(`name: ${address}, date: ${zip}, file: ${city}, textarea: ${country}`);
+    //   }
+
+    //   render() {
+    //     let { address } = this.state.errors
+    //     return (
+    //       <div className="container">
+    //         <form className="validation" onSubmit={this.handleSubmit}>
+    //           <h1>Shipping Address</h1>
+    //           <input type="checkbox" />
+    //           <label htmlFor="text">Address</label>
+    //           <input 
+    //             value={this.state.address} 
+    //             onChange={this.handleChange} 
+    //             type="text" 
+    //             name="address" 
+    //             id="text" 
+    //           />
+    //           <label htmlFor="date">Zip</label>
+    //           <input value={this.state.zip} 
+    //             onChange={this.handleChange} 
+    //             type="text" 
+    //             name="zip" 
+    //             id="date" 
+    //           />
+    //           <label htmlFor="fileInput">City</label>
+    //           <input 
+    //             value={this.state.city} 
+    //             onChange={this.handleChange} 
+    //             type="text" 
+    //             name="city" 
+    //             id="fileInput" 
+    //           />
+    //           <label htmlFor="readOnly">Country</label>
+    //           <input 
+    //             onChange={this.handleChange} 
+    //             type="text" 
+    //             name="country"  
+    //             id="readOnly"  
+    //             value={this.state.country} 
+    //           />
+    //           <input 
+    //             className="submit" 
+    //             type="submit" 
+    //             value="Submit"/>
+    //         </form>
+    //       </div>
+    //     )
+    //   }
+    // }
+
+
+
+    ReactDOM.render(<><ControlledForm/></>, document.getElementById("root"))
+
+  </script>
+</body>
+</html>

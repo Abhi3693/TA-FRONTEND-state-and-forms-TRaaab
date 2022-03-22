@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form-Validation</title>
+  <link rel="stylesheet" href="./index.css">
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    class CreateInput extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          text:"",
+          date:"",
+          file:"",
+          bio:"",
+        }
+      }
+
+      handleChange = (event) => {
+        let {name, value} = event.target
+        this.setState({
+          [name] : value,
+        });
+      }
+
+      handleSubmit = () => {
+        let{ name, date, file, bio } = this.state;
+        alert(`name: ${text}, date: ${date}, file: ${file}, textarea: ${bio}`);
+      }
+
+      render() {
+        return (
+          <div className="container">
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="text">Text Input</label>
+              <input 
+                value={this.state.name} 
+                onChange={this.handleChange} 
+                type="text" 
+                name="text" 
+                id="text"  
+              />
+              <label htmlFor="date">Date Input</label>
+              <input 
+                value={this.state.date} 
+                onChange={this.handleChange} 
+                type="date" 
+                name="date" 
+                id="date"  
+              />
+              <label htmlFor="fileInput">File Input</label>
+              <input 
+                value={this.state.file} 
+                onChange={this.handleChange} 
+                type="file" 
+                name="file" i
+                d="fileInput"  
+              />
+              <label htmlFor="readOnly">Read-Only Input</label>
+              <input 
+                onChange={this.handleChange} 
+                type="text" 
+                name="readOnly" 
+                readOnly = {true} 
+                id="readOnly"  
+                value="readOnly"
+              />
+              <label htmlFor="DesabledInput">Desabled Input</label>
+              <input 
+                onChange={this.handleChange} 
+                type="text" 
+                disabled={"disabled"} 
+                name="DesabledInput" 
+                id="DesabledInput"  
+              />
+              <label htmlFor="textarea">TextArea Input</label>
+              <textarea 
+                value={this.state.bio} 
+                onChange={this.handleChange} 
+                id="textarea" 
+                name="bio" 
+              />
+              <label htmlFor="textareaDesabled">Desabled TextArea</label>
+              <textarea 
+                onChange={this.handleChange} 
+                disabled={"disabled"} 
+                id="textareaDesabled" 
+                name="textareaDesabled" 
+              />
+              <input className="submit" type="submit" value="Submit"/>
+            </form>
+          </div>
+        )
+      }
+    }
+
+
+
+    class ValidatingInput extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          username:"",
+          password:"",
+          email:"",
+          conform:"",
+          errors: {
+            username:"",
+            password:"",
+            email:"",
+            conform:"",
+          }
+        }
+      }
+
+      validateEmail = (email) => {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+      }
+  
+
+      handleChange = (event) => {
+        let {name, value} = event.target;
+        let errors = this.state.errors;
+        switch (name) {
+          case "email" :
+            errors.email = this.validateEmail(value) ? "" : "Email is not valid";
+            break;
+          case "username" :
+            errors.username = value.length < 3 ? "Username must be atleast 3 charachter" : "";
+            break;
+          case "password" :
+            errors.password = value.length < 6 ? "Username must be atleast 6 charachter" : "";
+            break;
+          case "conform" :
+            errors.conform = value === this.state.password ? "" : "Password and Conform password must be matching";
+            break;
+          default:
+          break;
+        }
+        this.setState({errors, [name]: value,});
+      }
+
+      handleSubmit = () => {
+        let{username, password, email, conform}= this.state;
+        alert(`name: ${text}, date: ${date}, file: ${file}, textarea: ${bio}`);
+      }
+
+      render() {
+        let { username, email, password, conform } = this.state.errors
+        return (
+          <div className="container">
+            <form className="validation" onSubmit={this.handleSubmit}>
+              <h1>Register with us</h1>
+              <label htmlFor="text">Username</label>
+              <input 
+                value={this.state.username} 
+                onChange={this.handleChange} 
+                type="text" 
+                name="username" 
+                id="text" 
+                className={username && "error"} 
+              />
+              <span className="err-msg">{username}</span>
+              <label htmlFor="date">Email</label>
+              <input value={this.state.email} 
+                onChange={this.handleChange} 
+                type="text" 
+                name="email" 
+                id="date" 
+                className={ email && "error"} 
+              />
+              <span className="err-msg">{email}</span>
+              <label htmlFor="fileInput">Passward</label>
+              <input 
+                value={this.state.passward} 
+                onChange={this.handleChange} 
+                type="password" 
+                name="password" 
+                id="fileInput" 
+                className={ password && "error"} 
+              />
+              <span className="err-msg">{password}</span>
+              <label htmlFor="readOnly">Conform Passward</label>
+              <input 
+                onChange={this.handleChange} 
+                type="password" 
+                name="conform"  
+                id="readOnly"  
+                value={this.state.conform} 
+                className={ conform && "error"}
+              />
+              <span className="err-msg">{conform}</span>
+              <input 
+                className="submit" 
+                type="submit" 
+                value="Submit"/>
+            </form>
+          </div>
+        )
+      }
+    }
+
+  
+
+    ReactDOM.render(<><CreateInput /><ValidatingInput/></>, document.getElementById("root"))
+
+  </script>
+</body>
+</html>

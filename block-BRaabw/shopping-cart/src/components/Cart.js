@@ -1,67 +1,143 @@
-import React from "react";
-import data from "../data/data.json";
-
-
+import React from 'react';
 
 class Cart extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      isOpen: false,
+    };
   }
 
+  open = () => {
+    this.setState({ isOpen: true });
+  };
+
+  close = () => {
+    this.setState({ isOpen: false });
+  };
+
   render() {
-    let { state } = this.props;
-     let final =data.products.filter((pro)=>{
-       if(state.usersCart[pro.id]) {
-         return pro;
-       }
-     });
-     let subTotal = final.reduce((prev, curr)=> {
-       let singleItemPrice = curr.price * state.usersCart[curr.id]
-        prev = prev + singleItemPrice;
-        return Math.floor(prev, -1);
-     }, 0);
+    let productId = this.props.usersCart;
+
+    // Total Quantity of Products
+    let totalQuantity = this.props.usersCart.reduce((prev, curr) => {
+      prev = prev + curr.quantity;
+      return prev;
+    }, 0);
+
+    // Total Amount of All Products
+    let totalAmount = this.props.usersCart.reduce((prev, curr) => {
+      prev = prev + curr.price * curr.quantity;
+      return prev;
+    }, 0);
+
+    if (!this.state.isOpen) {
+      return <ClosedCart open={this.open} totalQuantity={totalQuantity} />;
+    }
+
     return (
-      <div className={state.showCart ? "cart-holder-true flex" :  "cart-holder-false flex"}>
-       
-          <div className="justify-center align-center flex gap-2 padd-2">
-            <div className="relative">
-              <img className="cart-img" src="/static/bag-icon.png" />
-              <span className="product-count flex justify-center align-center absolute">{Object.keys(state.usersCart).length}</span>
-            </div>
-            <h2 className="font-white cart-heading">Cart</h2>
+      <div className='open-cart-holder flex'>
+        <div onClick={this.close} className='btn close-cart-btn'>
+          X
+        </div>
+        <div className='cart-info relative'>
+          <div className='cart-heading-holder relative justify-center align-center flex gap-2 padd-2'>
+            <span className='open-btn'>
+              <div className='relative closed-cart-holder'>
+                <img className='closed-cart-img' src='/static/bag-icon.png' />
+                <span className='product-count flex justify-center align-center absolute'>
+                  {totalQuantity}
+                </span>
+              </div>
+            </span>
+            <h2 className='cart-heading'>Cart</h2>
           </div>
-          <ul className="cart-list-holder">
-            {final.map((item)=> {
-              return <li key={item.id} className="single-cart-item space-btw align-center gap-1 padd-1 flex">
-                <div>
-                  <img className="cart-img" src={`/static/products/${item.sku}_2.jpg`} />
-                </div>
-                <div className="product-info flex column gap-1">
-                  <h2 className="font-white cart-poroduct-title">{item.title}</h2>
-                  <h3 className="font-white cart-product-quantity"> Quantity:{state.usersCart[item.id]}</h3>
-                </div>
-                <div className="flex column align-center gap-1">
-                  <button onClick={()=>this.props.handleRemoveItemFromCart(item.id)} className="font-white remove-item">X</button>
-                  <h3 className="product-price-cart font-white">$ {item.price}</h3>
-                  <div className="flex">
-                    <button onClick={()=>this.props.handleReduceQuantityFromCart(item.id)} className="quantity remove-item font-white">-</button>
-                    <button onClick={()=>this.props.handleAddCart(item.id)} className="quantity remove-item font-white">+</button>
+          <ul className='cart-list-holder'>
+            {productId.map((item) => {
+              return (
+                <li
+                  key={item.id}
+                  className='single-cart-item align-center gap-1  padd-1 flex space-btw'
+                >
+                  <div className='flex gap-1 align-center'>
+                    <img
+                      className='cart-product-img'
+                      src={`/static/products/${item.sku}_2.jpg`}
+                    />
+                    <div className='product-info flex column gap-1'>
+                      <h2 className='font-white cart-poroduct-title'>
+                        {item.title}
+                      </h2>
+                      <h3 className='font-white cart-product-quantity'>
+                        Quantity: {item.quantity}
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              </li>
+                  <div className='flex column align-center margin-right-1'>
+                    <button
+                      onClick={() =>
+                        this.props.handleDeleteItemFromCart(item.id)
+                      }
+                      className='btn font-white remove-item'
+                    >
+                      X
+                    </button>
+                    <h3 className='product-price-cart font-white'>
+                      {item.currencyFormat} {item.price}
+                    </h3>
+                    <div className='flex'>
+                      <button
+                        onClick={() => this.props.decrenmentQuantity(item.id)}
+                        className='btn quantity remove-item font-white'
+                      >
+                        -
+                      </button>
+                      <button
+                        onClick={() => this.props.increamentQuantity(item.id)}
+                        className='btn quantity remove-item font-white'
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              );
             })}
           </ul>
-          <div className="cart-total-box flex column padd-2">
-            <div className="sub-total-box flex space-btw padd-1">
-              <span className="font-white sub-total">SUBTOTAL</span>
-              <span className="font-white count-sub-total">$ {subTotal}</span>
+          <div className='cart-total-box flex column padd-2'>
+            <div className='sub-total-box flex space-btw padd-1'>
+              <span className='font-white sub-total'>SUBTOTAL</span>
+              <span className='font-white count-sub-total'>
+                $ {totalAmount}
+              </span>
             </div>
-            <button onClick={()=>this.props.handleCheckout(subTotal)} className="font-white checkout flex justify-center">CHECKOUT</button>
+
+            <button
+              onClick={() => alert(`Total Amount: ${totalAmount}`)}
+              className='btn font-white checkout flex justify-center'
+            >
+              CHECKOUT
+            </button>
           </div>
+        </div>
       </div>
-    )
+    );
   }
 }
 
-export default Cart
+export default Cart;
+
+function ClosedCart(props) {
+  return (
+    <div className='btn closed-cart' onClick={props.open}>
+      <span onClick={props.open} className='open-btn'>
+        <div className='relative closed-cart-holder'>
+          <img className='closed-cart-img' src='/static/bag-icon.png' />
+          <span className='product-count flex justify-center align-center absolute'>
+            {props.totalQuantity}
+          </span>
+        </div>
+      </span>
+    </div>
+  );
+}
